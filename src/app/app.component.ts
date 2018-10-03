@@ -3,6 +3,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
+  moduleId : module.id.split('\\').join('/'), 
   selector: 'App',
   templateUrl:'./app.component.html'
 })
