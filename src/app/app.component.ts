@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'App',
-  templateUrl:'./app/app.component.html'
+  templateUrl:'./app.component.html'
 })
 export class AppComponent implements OnInit {
   public readonly name = 'electron-forge';
