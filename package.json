@@ -47,6 +47,7 @@
     }
   },
   "dependencies": {
+    "@angular/forms": "^5.0.0",
     "@angular/cli": "~6.2.4",
     "@angular/common": "^5.0.0",
     "@angular/compiler": "^5.0.0",
