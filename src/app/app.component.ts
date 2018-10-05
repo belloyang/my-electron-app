@@ -2,7 +2,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import {spawn, ChildProcess} from "child_process";
-import { PassThrough} from 'stream';
+
 
 
 
@@ -15,10 +15,13 @@ export class AppComponent implements OnInit {
   public readonly name = 'electron-forge';
 
   stdin:string="";
-  stdout:string = "";
+  outputLog:string = "";
   inputLog:string = "";
   activeChild:ChildProcess = null;
   activeCmd = "";
+
+
+
   constructor(){
     console.log("AppComponent constructed!");
   }
@@ -41,23 +44,19 @@ export class AppComponent implements OnInit {
       let self = this;
       this.activeChild.stdout.on('data', (data:any) => {
         console.log(`child stdout:\n${data}`);
-        this.stdout += data.toString();
+        this.outputLog += data.toString();
       });
     
       
-      this.activeChild.stdin.on('data', (data:any) => {
-          console.log(`child stdin:\n${data}`);
-          this.inputLog += data.toString();
-        });
-  
+ 
         this.activeChild.stderr.on('data', (data:any) => {
           console.error(`child stderr:\n${data}`);
-          this.stdout += data.toString();
+          this.outputLog += data.toString();
         });
   
         this.activeChild.on('exit', function (code:any, signal:any) {
           console.log('child process exited with ' +
-                      `code ${code} and signal ${signal}`);
+                      `code ${code} and signal ${signal}`); 
           self.activeChild = null;
         });
     }
