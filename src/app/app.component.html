@@ -1,3 +1,25 @@
-<div>
-    Hello World! {{name}}
+<div >
+ 
+
+    <h1 style="text-align:center;"> Command Line Simulator</h1>
+   
+   <div *ngIf="activeChild!==null">executing command {{activeCmd}}</div>
+    <div >
+        CMD-LINE$<input type="text" [(ngModel)]="stdin" style="width:50%;"/>
+        <button (click)="processInput(stdin)" >Enter</button>
+        <textarea style="width: 100%;height: 300px;background:lightcyan;"
+        placeholder="standard input.."
+        [ngModel]="inputLog"
+        >
+
+        </textarea>
+        <textarea style="width: 100%;height: 300px;background:lightgray;"
+        placeholder="standard output.."
+        [ngModel]="stdout"
+        >
+   
+        </textarea>
+    </div>
+   
+    
 </div>
