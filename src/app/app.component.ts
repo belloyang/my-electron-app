@@ -68,9 +68,12 @@ export class AppComponent implements OnInit {
           this.outputLog$.next(this.outputLog);
         });
   
-        this.activeChild.on('exit', function (code:any, signal:any) {
+        this.activeChild.on('exit',  (code:any, signal:any) =>{
           console.log('child process exited with ' +
                       `code ${code} and signal ${signal}`); 
+
+          self.outputLog += '-----------------------------------------------------\n';
+          this.outputLog$.next(this.outputLog);
           self.activeChild = null;
         });
     }
@@ -90,5 +93,15 @@ export class AppComponent implements OnInit {
   }
   
 
+  
+  clearInput(){
+    this.inputLog = "";
+    this.inputLog$.next(this.inputLog);
+  }
+
+  clearOutput(){
+    this.outputLog = "";
+    this.outputLog$.next(this.outputLog);
+  }
 }
 
