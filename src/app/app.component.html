@@ -5,19 +5,17 @@
    
    <div *ngIf="activeChild!==null">executing command {{activeCmd}}</div>
     <div >
-        CMD-LINE$<input type="text" [(ngModel)]="stdin" style="width:50%;"/>
-        <button (click)="processInput(stdin)" >Enter</button>
+        CMD-LINE$<input type="text" [(ngModel)]="stdin" style="width:50%;"  (keydown.enter)="processInput(stdin)"/>
+        <button (click)="processInput(stdin)">Enter</button>
         <textarea style="width: 100%;height: 300px;background:lightcyan;"
         placeholder="standard input.."
-        [ngModel]="inputLog"
         >
-
+        {{inputLog$|async}}
         </textarea>
         <textarea style="width: 100%;height: 300px;background:lightgray;"
         placeholder="standard output.."
-        [ngModel]="outputLog"
         >
-   
+        {{outputLog$|async}}
         </textarea>
     </div>
    
