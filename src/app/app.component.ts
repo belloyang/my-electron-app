@@ -43,6 +43,11 @@ export class AppComponent implements OnInit {
     let self = this;
     if(this.activeChild == null){
       console.log("Executing command:"+stdin);
+      this.inputLog += '-----------------------------------------------------\n';
+      this.inputLog += stdin +'\n';
+      this.inputLog$.next(this.inputLog);
+
+
       let cmd = stdin.split(/\s+/);
       console.log("Parse commands:",cmd);
       this.activeCmd = cmd[0];
