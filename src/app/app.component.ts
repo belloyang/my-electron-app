@@ -36,12 +36,18 @@ export class AppComponent implements OnInit {
 
   }
 
+  /* * * * * * * * * * * * * * * * * * * * * * 
+   * Process input from simulated command line
+   * */
   processInput(stdin:string){
     let self = this;
     if(this.activeChild == null){
       console.log("Executing command:"+stdin);
-      this.activeCmd = stdin;
-      this.activeChild = spawn(stdin).on('error', 
+      let cmd = stdin.split(/\s+/);
+      console.log("Parse commands:",cmd);
+      this.activeCmd = cmd[0];
+      console.log("Run command with parameters:",cmd[0],cmd.splice(0,1));
+      this.activeChild = spawn(this.activeCmd, cmd.splice(0,1)).on('error', 
       function( err:any ){ 
         console.log(err); 
         self.activeChild = null;
