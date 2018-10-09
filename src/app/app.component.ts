@@ -4,7 +4,10 @@ import { Component, OnInit } from '@angular/core';
 import {spawn, ChildProcess} from "child_process";
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
-const {dialog} = require('electron').remote;
+const remote = require('electron').remote;
+
+const electronFs = remote.require('fs');
+const electronDialog = remote.dialog;
 
 
 @Component({
@@ -43,7 +46,7 @@ export class AppComponent implements OnInit {
   }
 
   selectDirectory(){
-    dialog.showOpenDialog( {
+    electronDialog.showOpenDialog( {
       properties: ['openDirectory']
     },(filePaths)=>{
       console.log(filePaths, " is choosen");
@@ -55,6 +58,27 @@ export class AppComponent implements OnInit {
       }
 
     });
+  }
+
+  saveLog(log:string, ioFlag:string){
+    electronDialog.showSaveDialog({
+      defaultPath: this.cwd+`/${ioFlag}.log`
+    },(filename)=>{
+
+      if(filename === undefined){
+        return;
+      }
+      electronFs.writeFile(filename,log, (err:any)=>{
+        if(err){
+          alert("An error ocurred creating the file "+ err.message);
+        }
+        // alert(`${filename} is saved`);
+        console.log(`${filename} is saved`);
+      })
+      
+
+
+    })
   }
   /* * * * * * * * * * * * * * * * * * * * * * 
    * Process input from simulated command line
