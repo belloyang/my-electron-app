@@ -14,6 +14,12 @@
   "keywords": [],
   "author": "bingyang",
   "license": "MIT",
+  "browser": {
+    "fs": false,
+    "path": false,
+    "child_process": false,
+    "os": false
+  },
   "config": {
     "forge": {
       "make_targets": {
