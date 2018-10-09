@@ -17,8 +17,8 @@
                 >{{inputLog$|async}}</textarea>
             </mat-card-content>
             <mat-card-actions>
-                <button mat-raised-button (click)="clearInput()">Clear Input Log</button>
-                <button mat-raised-button (click)="saveLog(inputLog,'input')">Save Log</button>
+                <button mat-raised-button (click)="clearInput()"><mat-icon>delete</mat-icon>Clear Log</button>
+                <button mat-raised-button (click)="saveLog(inputLog,'input')"><mat-icon>save</mat-icon>Save Log</button>
             </mat-card-actions>
         </mat-card>
        
@@ -29,8 +29,8 @@
                 >{{outputLog$|async}}</textarea>
             </mat-card-content>
             <mat-card-actions>
-                <button mat-raised-button (click)="clearOutput()">Clear Output Log</button>
-                <button mat-raised-button (click)="saveLog(outputLog,'output')">Save Log</button>
+                <button mat-raised-button (click)="clearOutput()"><mat-icon>delete</mat-icon>Clear Log</button>
+                <button mat-raised-button (click)="saveLog(outputLog,'output')"><mat-icon>save</mat-icon>Save Log</button>
             </mat-card-actions>
         </mat-card>
           
