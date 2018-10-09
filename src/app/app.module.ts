@@ -4,17 +4,14 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { FormsModule } from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MatButtonModule, MatCheckboxModule, MatCardModule,MatIconModule} from '@angular/material';
 
+import {MaterialModule} from "./material/material.module"
 @NgModule({
     imports: [
       BrowserModule,
       FormsModule,
       BrowserAnimationsModule,
-      MatButtonModule,
-      MatCheckboxModule,
-      MatCardModule,
-      MatIconModule
+      MaterialModule
     ],
     declarations: [AppComponent],
     bootstrap: [AppComponent]
