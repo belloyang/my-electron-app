@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import {spawn, ChildProcess} from "child_process";
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
+const {dialog} = require('electron').remote;
 
 
 @Component({
@@ -20,14 +21,19 @@ export class AppComponent implements OnInit {
   activeChild:ChildProcess|any = null;
   activeCmd = "";
 
+  cwd:string;
+  cwd$:BehaviorSubject<string>;
+
   outputLog$:BehaviorSubject<string>;
   inputLog$:BehaviorSubject<string>;
 
-
+  
   constructor(){
     console.log("AppComponent constructed!");
     this.outputLog$ = new BehaviorSubject<string>(this.outputLog);
     this.inputLog$ = new BehaviorSubject<string>(this.inputLog);
+    this.cwd = process.cwd();
+    this.cwd$ = new BehaviorSubject<string>(this.cwd);
   }
 
   ngOnInit(): void {
@@ -36,6 +42,20 @@ export class AppComponent implements OnInit {
 
   }
 
+  selectDirectory(){
+    dialog.showOpenDialog( {
+      properties: ['openDirectory']
+    },(filePaths)=>{
+      console.log(filePaths, " is choosen");
+      if(filePaths){
+        process.chdir(filePaths[0]);
+        this.cwd = process.cwd();
+        this.cwd$.next(this.cwd);
+        console.log("Current Working Directory is changed to ",this.cwd);
+      }
+
+    });
+  }
   /* * * * * * * * * * * * * * * * * * * * * * 
    * Process input from simulated command line
    * */
@@ -55,7 +75,8 @@ export class AppComponent implements OnInit {
       this.activeChild = spawn(this.activeCmd, cmd.splice(0,1)).on('error', 
       function( err:any ){ 
         console.log(err); 
-        self.outputLog +="Invalid command:" + err.message;
+        self.outputLog +="Invalid command:" + err.message + '\n';
+        self.outputLog += '-----------------------------------------------------\n';
         self.outputLog$.next(self.outputLog);
         self.activeChild = null;
       });

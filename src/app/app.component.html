@@ -5,6 +5,9 @@
    
    <div *ngIf="activeChild!==null">executing command {{activeCmd}}</div>
     <div >
+        <p>Current Working Directory: {{cwd$|async}} 
+        <button mat-button (click)="selectDirectory()">Change</button>
+        </p>
         CMD-LINE$<input matInput type="text" [(ngModel)]="stdin" style="width:50%;"  (keydown.enter)="processInput(stdin)"/>
         <button mat-raised-button (click)="processInput(stdin)">Enter</button>
         <mat-card>
