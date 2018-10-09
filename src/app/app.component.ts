@@ -55,6 +55,8 @@ export class AppComponent implements OnInit {
       this.activeChild = spawn(this.activeCmd, cmd.splice(0,1)).on('error', 
       function( err:any ){ 
         console.log(err); 
+        self.outputLog +="Invalid command:" + err.message;
+        self.outputLog$.next(self.outputLog);
         self.activeChild = null;
       });
 

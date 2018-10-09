@@ -5,16 +5,30 @@
    
    <div *ngIf="activeChild!==null">executing command {{activeCmd}}</div>
     <div >
-        CMD-LINE$<input type="text" [(ngModel)]="stdin" style="width:50%;"  (keydown.enter)="processInput(stdin)"/>
-        <button (click)="processInput(stdin)">Enter</button>
-        <textarea style="width: 100%;height: 300px;background:lightcyan;"
-        placeholder="standard input.."
-        >{{inputLog$|async}}</textarea>
-        <button mat-button (click)="clearInput()">Clear Input Log</button>
-        <textarea style="width: 100%;height: 300px;background:lightgray;"
-        placeholder="standard output.."
-        >{{outputLog$|async}}</textarea>
-        <button mat-button (click)="clearOutput()">Clear Output Log</button>
+        CMD-LINE$<input matInput type="text" [(ngModel)]="stdin" style="width:50%;"  (keydown.enter)="processInput(stdin)"/>
+        <button mat-raised-button (click)="processInput(stdin)">Enter</button>
+        <mat-card>
+            <mat-card-content>
+                 <textarea style="width: 100%;height: 200px;background:lightcyan;"
+                placeholder="standard input.."
+                >{{inputLog$|async}}</textarea>
+            </mat-card-content>
+            <mat-card-actions>
+                <button mat-raised-button (click)="clearInput()">Clear Input Log</button>
+            </mat-card-actions>
+        </mat-card>
+       
+        <mat-card>
+            <mat-card-content>
+                <textarea style="width: 100%;height: 200px;background:lightgray;"
+                placeholder="standard output.."
+                >{{outputLog$|async}}</textarea>
+            </mat-card-content>
+            <mat-card-actions>
+                <button mat-raised-button (click)="clearOutput()">Clear Output Log</button>
+            </mat-card-actions>
+        </mat-card>
+          
     </div>
    
     
