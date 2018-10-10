@@ -1,6 +1,6 @@
 
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import {spawn, ChildProcess} from "child_process";
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
@@ -31,7 +31,7 @@ export class AppComponent implements OnInit {
   inputLog$:BehaviorSubject<string>;
 
   
-  constructor(){
+  constructor(private ngZone:NgZone){
     console.log("AppComponent constructed!");
     this.outputLog$ = new BehaviorSubject<string>(this.outputLog);
     this.inputLog$ = new BehaviorSubject<string>(this.inputLog);
@@ -107,6 +107,7 @@ export class AppComponent implements OnInit {
 
       
       this.activeChild.stdout.on('data', (data:any) => {
+
         console.log(`child stdout:\n${data}`);
         this.outputLog += data.toString();
         this.outputLog$.next(this.outputLog);
@@ -115,18 +116,28 @@ export class AppComponent implements OnInit {
       
  
         this.activeChild.stderr.on('data', (data:any) => {
-          console.error(`child stderr:\n${data}`);
-          this.outputLog += data.toString();
-          this.outputLog$.next(this.outputLog);
+          this.ngZone.run(
+            ()=>{
+              console.error(`child stderr:\n${data}`);
+              this.outputLog += data.toString();
+              this.outputLog$.next(this.outputLog);
+            }
+          );
+          
         });
   
         this.activeChild.on('exit',  (code:any, signal:any) =>{
-          console.log('child process exited with ' +
+          this.ngZone.run(
+            ()=>{
+              console.log('child process exited with ' +
                       `code ${code} and signal ${signal}`); 
 
-          self.outputLog += '-----------------------------------------------------\n';
-          this.outputLog$.next(this.outputLog);
-          self.activeChild = null;
+              self.outputLog += '-----------------------------------------------------\n';
+              this.outputLog$.next(this.outputLog);
+              self.activeChild = null;
+            }
+          )
+          
         });
     }
     else{//stream input to child
