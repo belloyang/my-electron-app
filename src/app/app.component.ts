@@ -49,13 +49,16 @@ export class AppComponent implements OnInit {
     electronDialog.showOpenDialog( {
       properties: ['openDirectory']
     },(filePaths)=>{
-      console.log(filePaths, " is choosen");
-      if(filePaths){
-        process.chdir(filePaths[0]);
-        this.cwd = process.cwd();
-        this.cwd$.next(this.cwd);
-        console.log("Current Working Directory is changed to ",this.cwd);
-      }
+      this.ngZone.run(()=>{
+        console.log(filePaths, " is choosen");
+        if(filePaths){
+          process.chdir(filePaths[0]);
+          this.cwd = process.cwd();
+          this.cwd$.next(this.cwd);
+          console.log("Current Working Directory is changed to ",this.cwd);
+        }
+      });
+      
 
     });
   }
@@ -107,10 +110,12 @@ export class AppComponent implements OnInit {
 
       
       this.activeChild.stdout.on('data', (data:any) => {
-
-        console.log(`child stdout:\n${data}`);
-        this.outputLog += data.toString();
-        this.outputLog$.next(this.outputLog);
+        this.ngZone.run(
+          ()=>{
+            console.log(`child stdout:\n${data}`);
+            this.outputLog += data.toString();
+            this.outputLog$.next(this.outputLog);
+          });
       });
     
       
@@ -121,8 +126,7 @@ export class AppComponent implements OnInit {
               console.error(`child stderr:\n${data}`);
               this.outputLog += data.toString();
               this.outputLog$.next(this.outputLog);
-            }
-          );
+            });
           
         });
   
@@ -135,8 +139,7 @@ export class AppComponent implements OnInit {
               self.outputLog += '-----------------------------------------------------\n';
               this.outputLog$.next(this.outputLog);
               self.activeChild = null;
-            }
-          )
+            });
           
         });
     }
